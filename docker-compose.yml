@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.97.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otelcol/otelcol.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"        # OTLP/gRPC IN (traces, metrics, logs)
+      - "8888:8888"        # Collector internal metrics endpoint
+    depends_on:
+      - tempo
+      - loki
+      - prometheus
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - otelcol
+      - tempo
+      - loki
+      - prometheus
+
+  tempo:
+    image: grafana/tempo:2.4.1
+    command: ["-config.file=/etc/tempo/tempo.yaml"]
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml:ro
+    ports:
+      - "3200:3200"   # Tempo HTTP query API
+
+  loki:
+    image: grafana/loki:3.0.0
+    command: -config.file=/etc/loki/loki-local.yaml
+    volumes:
+      - ./loki/loki-local.yaml:/etc/loki/loki-local.yaml:ro
+    ports:
+      - "3100:3100"   # Loki push & query API
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"   # Prometheus UI & scrape endpoint
