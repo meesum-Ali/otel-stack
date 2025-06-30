@@ -12,12 +12,14 @@ exporters:
     endpoint: tempo:4317
     tls:
       insecure: true
-
   prometheusremotewrite:
     endpoint: "http://prometheus:9090/api/v1/write"
 
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
+  logging: 
+    loglevel: debug
+    # verbosity: detailed
 
 service:
   pipelines:

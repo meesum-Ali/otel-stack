@@ -44,7 +44,10 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.52.0
+    command: # Add this command section
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--web.enable-remote-write-receiver' # This flag enables the remote write API
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yaml:ro
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
     ports:
       - "9090:9090"   # Prometheus UI & scrape endpoint
