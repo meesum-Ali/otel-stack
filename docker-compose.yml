@@ -45,6 +45,6 @@ services:
   prometheus:
     image: prom/prometheus:v2.52.0
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yaml:ro
     ports:
       - "9090:9090"   # Prometheus UI & scrape endpoint
