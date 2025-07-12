@@ -13,6 +13,23 @@ This project demonstrates how to set up and test an OpenTelemetry (OTel) stack l
 - `grafana/provisioning/datasources/` — Auto-provisioning configuration for Grafana data sources.
 - `otel_test_env/` — Python virtual environment for dependencies.
 
+---
+
+```mermaid
+graph TD
+    A["Python App<br/>(test_otel.py)"] --> B["OTel Collector"]
+    B --> C["Tempo<br/>(Traces)"]
+    B --> D["Prometheus<br/>(Metrics)"]
+    B --> E["Loki<br/>(Logs)"]
+    C --> F["Grafana"]
+    D --> F
+    E --> F
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
 ## Features
 
 ✅ **Auto-configured Grafana Data Sources** - Prometheus, Tempo, and Loki are automatically configured in Grafana with cross-correlations:
@@ -101,6 +118,25 @@ You should see output indicating that telemetry data was sent.
 - **Collector Endpoint:** Ensure the `endpoint` in `OTLPSpanExporter` matches your OTel Collector address.
 - **Add More Spans:** Extend `test_otel.py` to generate more complex traces.
 - **Modify Data Sources:** Edit `grafana/provisioning/datasources/datasources.yaml` to customize data source configurations.
+
+## Example Grafana Dashboards
+
+To help you get started visualizing your telemetry, example dashboards are provided:
+
+- **Tempo Traces Overview:** Search and view traces from Tempo.
+- **Prometheus Metrics Overview:** Visualize request rate and latency metrics.
+- **Loki Logs Overview:** Stream logs from the test-service.
+
+Dashboards are located in `grafana/provisioning/dashboards/`.
+
+### Importing Dashboards
+
+1. Open Grafana at [http://localhost:3000](http://localhost:3000)
+2. Go to **Dashboards > Manage > Import**
+3. Upload the desired JSON file from `grafana/provisioning/dashboards/`
+4. Select the appropriate data source if prompted
+
+You can also configure Grafana to auto-import these dashboards by updating the provisioning config (see Grafana docs).
 
 ## Troubleshooting
 

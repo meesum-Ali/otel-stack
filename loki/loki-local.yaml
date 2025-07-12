@@ -1,26 +1,28 @@
-auth_enabled: false
+# Loki configuration for local log storage
+
+auth_enabled: false # Disable auth for local/dev
 
 server:
-  http_listen_port: 3100
+  http_listen_port: 3100 # Loki API port
 
 common:
   ring:
-    instance_addr: 127.0.0.1
+    instance_addr: 127.0.0.1 # Single-node ring address
     kvstore:
-      store: inmemory
-  replication_factor: 1
-  path_prefix: /tmp/loki
+      store: inmemory # In-memory key-value store for dev
+  replication_factor: 1 # No replication for local/dev
+  path_prefix: /tmp/loki # Base path for local data
 
 schema_config:
   configs:
     - from: 2020-05-15
-      store: tsdb
-      object_store: filesystem
+      store: tsdb # Use TSDB for log storage
+      object_store: filesystem # Store chunks on local filesystem
       schema: v13
       index:
         prefix: index_
-        period: 24h
+        period: 24h # New index every 24h
 
 storage_config:
   filesystem:
-    directory: /tmp/loki/chunks
+    directory: /tmp/loki/chunks # Directory for log chunks

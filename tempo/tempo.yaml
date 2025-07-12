@@ -1,27 +1,30 @@
+# Tempo configuration for local tracing backend
+
+# Disable authentication for local/dev
 auth_enabled: false
 
 server:
-  http_listen_port: 3200
+  http_listen_port: 3200 # HTTP API port for Tempo
 
 distributor:
   receivers:
     otlp:
       protocols:
-        grpc: {}
-        http: {}
+        grpc: {} # Accept OTLP traces via gRPC
+        http: {} # Accept OTLP traces via HTTP
 
 ingester:
   lifecycler:
     ring:
       kvstore:
-        store: inmemory
+        store: inmemory # Use in-memory ring for single-node/dev
 
 compactor:
   compaction:
-    block_retention: 48h
+    block_retention: 48h # Retain trace blocks for 48 hours
 
 storage:
   trace:
-    backend: local
+    backend: local # Store traces locally (not cloud/S3)
     local:
-      path: /tmp/tempo/traces
+      path: /tmp/tempo/traces # Local path for trace storage

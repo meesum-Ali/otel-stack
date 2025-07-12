@@ -1,37 +1,38 @@
+# OpenTelemetry Collector configuration for local observability stack
 receivers:
-  otlp:
+  otlp: # Receives telemetry data via OTLP (gRPC and HTTP)
     protocols:
-      grpc:
-      http:
+      grpc: # gRPC endpoint (default 4317)
+      http: # HTTP endpoint (default 4318)
 
 processors:
-  batch:
+  batch: # Batches telemetry data for efficient export
 
 exporters:
   otlp/tempo:
-    endpoint: tempo:4317
+    endpoint: tempo:4317 # Send traces to Tempo (gRPC)
     tls:
-      insecure: true
+      insecure: true # Disable TLS for local/dev
   prometheusremotewrite:
-    endpoint: "http://prometheus:9090/api/v1/write"
+    endpoint: "http://prometheus:9090/api/v1/write" # Send metrics to Prometheus
 
   loki:
-    endpoint: "http://loki:3100/loki/api/v1/push"
+    endpoint: "http://loki:3100/loki/api/v1/push" # Send logs to Loki
   logging: 
-    loglevel: debug
+    loglevel: debug # Log all telemetry to console for debugging
     # verbosity: detailed
 
 service:
   pipelines:
     traces:
-      receivers: [otlp]
+      receivers: [otlp] # Accept traces from OTLP
       processors: [batch]
-      exporters: [otlp/tempo]
+      exporters: [otlp/tempo] # Export traces to Tempo
     metrics:
-      receivers: [otlp]
+      receivers: [otlp] # Accept metrics from OTLP
       processors: [batch]
-      exporters: [prometheusremotewrite]
+      exporters: [prometheusremotewrite] # Export metrics to Prometheus
     logs:
-      receivers: [otlp]
+      receivers: [otlp] # Accept logs from OTLP
       processors: [batch]
-      exporters: [loki]
+      exporters: [loki] # Export logs to Loki

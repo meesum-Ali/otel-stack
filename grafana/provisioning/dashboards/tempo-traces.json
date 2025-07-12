@@ -1,0 +1,60 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1625246108245,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Tempo",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "showSearch": true,
+        "showTraceId": true,
+        "showSpanCount": true,
+        "showDuration": true,
+        "showServiceName": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": "Tempo",
+          "queryType": "traceSearch",
+          "refId": "A"
+        }
+      ],
+      "title": "Trace Search (Tempo)",
+      "type": "tempo-search"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": ["tempo", "traces"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Tempo Traces Overview",
+  "uid": "tempo-traces-overview",
+  "version": 1
+} 
